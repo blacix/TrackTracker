@@ -1,0 +1,196 @@
+package com.bartoknet.tracktracker.facebook;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import com.bartoknet.tracktracker.ConfigurationManager;
+import com.facebook.android.DialogError;
+import com.facebook.android.Facebook;
+import com.facebook.android.Facebook.DialogListener;
+import com.facebook.android.FacebookError;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+//import com.facebook.android.AsyncFacebookRunner;
+
+public class FacebookWrapper {
+
+	static final String LOG_TAG = FacebookWrapper.class.getSimpleName();
+
+	private String ApplicationID;
+	private Facebook facebook;
+	//private AsyncFacebookRunner FacebookRunner; // using simple thread instead
+
+	/*************************************************************************************************
+	 * 
+	 */
+	public FacebookWrapper(String appID) {
+		super();
+		ApplicationID = appID;
+		facebook = new Facebook(ApplicationID);
+		//FacebookRunner = new AsyncFacebookRunner(facebook);
+	}
+
+	/*************************************************************************************************
+	 * 
+	 */
+	private final class FacebookLoginDialogListener implements DialogListener {
+		static final String LOG_TAG = "FacebookLoginDialogListener";
+
+		Context context;
+
+		public FacebookLoginDialogListener(Context context) {
+			this.context = context;
+		}
+
+		@Override
+		public void onComplete(Bundle values) {
+			Log.d(LOG_TAG, "onComplete");
+			ConfigurationManager.saveFacebookSession(facebook, context);
+		}
+
+		@Override
+		public void onFacebookError(FacebookError error) {
+			Log.d(LOG_TAG, "onFacebookError: " + error.getMessage());
+
+		}
+
+		@Override
+		public void onError(DialogError error) {
+			Log.d(LOG_TAG, "onError: " + error.getMessage());
+
+		}
+
+		@Override
+		public void onCancel() {
+			Log.d(LOG_TAG, "onCancel");
+		}
+	}
+
+	/*************************************************************************************************
+	 * 
+	 */
+	public boolean isLoggedIn() {
+		return (facebook.isSessionValid());
+	}
+
+	
+	/*************************************************************************************************
+	 * 
+	 */
+	public void discardCredentials(final Context context) {
+		new Thread(new Runnable() {
+			public void run() {
+
+				try {
+					facebook.logout(context);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		}).start();
+	}
+
+	
+	/*************************************************************************************************
+	 * 
+	 */
+	public void login(final Context context) {
+		if (!ConfigurationManager.restoreFacebookSession(facebook, context)) {
+
+			facebook.authorize((Activity) context, new String[] {
+					"publish_stream", "read_stream", "offline_access" },
+					new FacebookLoginDialogListener(context));
+		}
+
+	}
+
+	
+	/*************************************************************************************************
+	 * 
+	 */
+	public void shareWithDialog(Context context, String link, String picture,
+			String name, String description) {
+		Bundle params = new Bundle();
+		params.putString("link", link);
+		params.putString("picture", picture);
+		params.putString("name", name);
+		params.putString("description", description);
+
+		facebook.dialog(context, "feed", params, new DialogListener() {
+
+			@Override
+			public void onFacebookError(FacebookError arg0) {
+			}
+
+			@Override
+			public void onError(DialogError arg0) {
+			}
+
+			@Override
+			public void onComplete(Bundle arg0) {
+			}
+
+			@Override
+			public void onCancel() {
+			}
+		});
+
+		context = null; // release for gc
+	}
+
+	
+	/*************************************************************************************************
+	 * 
+	 */
+	public void shareWithoutDialog(final ProgressDialog progress, final String message,
+			final String link, final String picture, final String name,
+			final String description) {
+		new Thread(new Runnable() {
+			public void run() {
+				Bundle parameters = new Bundle();
+				parameters.putString("message", message);
+				parameters.putString("link", link);
+				parameters.putString("picture", picture);
+				parameters.putString("name", name);
+				parameters.putString("description", description);
+
+				try {
+
+					facebook.request("me");
+					String response = facebook.request("me/feed", parameters,
+							"POST");
+					Log.d(LOG_TAG, "got response: " + response);
+					if (response == null || response.equals("")
+							|| response.equals("false")) {
+
+					} else {
+
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				progress.dismiss();
+			}
+		}).start();
+	}
+
+	
+	/*************************************************************************************************
+	 * 
+	 */
+	public void authorizeCallback(int requestCode, int resultCode, Intent data) {
+		facebook.authorizeCallback(requestCode, resultCode, data);
+	}
+
+}

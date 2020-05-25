@@ -1,0 +1,17 @@
+C:\Users\HU3B12R7\.android>keytool -exportcert -alias androiddebugkey -keystore
+debug.keystore | c:\OpenSSL-Win32\bin\openssl.exe sha1 -binary | c:\OpenSSL-Win3
+2\bin\openssl.exe base64
+Enter keystore password:  WWARNING: can't open config file: /usr/local/ssl/opens
+sl.cnf
+ARNING: can't open config file: /usr/local/ssl/openssl.cnf
+rr4dvn
+Bmce+9aHdOoVtE7fS3B07tfj7Bc=
+
+C:\Users\HU3B12R7\.android>keytool -exportcert -alias androiddebugkey -keystore
+debug.keystore | c:\OpenSSL-Win32\bin\openssl.exe sha1 -binary | c:\OpenSSL-Win3
+2\bin\openssl.exe base64
+
+
+
+
+"c:\Program Files (x86)\Java\jre7\bin\keytool.exe" -exportcert -alias androiddebugkey -keystore debug.keystore | c:\Mingw\msys\1.0\bin\openssl.exe sha1 -binary | c:\Mingw\msys\1.0\bin\openssl.exe base64

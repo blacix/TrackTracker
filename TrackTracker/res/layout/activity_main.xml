@@ -1,0 +1,90 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <RelativeLayout
+        android:id="@+id/relative_layout_main"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
+
+        <TextView
+            android:id="@+id/textview_main_networkstatus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Network Status" 
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/textview_main_search"
+            android:text="Search on Youtube"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textview_main_networkstatus"
+            android:padding="5dp"/>
+        
+        <EditText
+            android:id="@+id/edittext_main_youtube_search"
+            android:text="Enter search term here!"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_main_search"
+            android:padding="5dp"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:enabled="true"/>
+
+        <Button
+            android:id="@+id/button_main_youtube_search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/edittext_main_youtube_search"
+            android:text="Search"
+            android:padding="5dp"/>
+        
+        <TextView
+            android:id="@+id/textview_main_facebook_post"
+            android:text="Facebook message:"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/button_main_youtube_search"
+            android:padding="5dp"/>
+        
+        <EditText
+            android:id="@+id/edittext_main_facebook_post"
+            android:text="Enter Facebook message here!!"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textview_main_facebook_post"
+            android:padding="5dp"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
+            android:enabled="true"/>
+
+        
+        <Button
+            android:id="@+id/button_main_facebook_post"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/edittext_main_facebook_post"
+            android:text="Post"
+            android:padding="5dp"/>
+        
+        
+        <TextView
+            android:id="@+id/textview_main_videos"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/button_main_facebook_post"
+            android:padding="10dp"/>
+        
+</RelativeLayout>
+
+</ScrollView>
